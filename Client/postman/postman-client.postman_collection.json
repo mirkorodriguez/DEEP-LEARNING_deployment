@@ -1,0 +1,32 @@
+{
+	"variables": [],
+	"info": {
+		"name": "postman-client",
+		"_postman_id": "0997dfac-8f45-edec-96c6-54ced55f2c98",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "postman-client",
+			"request": {
+				"url": "http://<public-ip>:5000/model/predict/",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "img01.jpg"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

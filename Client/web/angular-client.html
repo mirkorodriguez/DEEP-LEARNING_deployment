@@ -1,0 +1,133 @@
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO 8859-1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Clasificar Imagen</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
+
+</head>
+
+<body ng-app="myApp" ng-cloak bgcolor="black" ng-controller="myCtrl" layout="column">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <span>Clasificar Flores</span>
+    </div>
+  </md-toolbar>
+
+  <form name="myForm">
+    <md-card style="margin-bottom:0px">
+      <md-card-content>
+        <div style="margin-bottom:16px" layout="column" layout-align="center">
+          <span style="font-weight:bold;font-size:13">Imagen:</span>
+          <input type="file" name="file" ng-model="cn" class="form-control" onchange="loadFile(event)" accept=".jpg,.jpeg,.png" style="font-size:13">
+        </div>
+
+        <div  layout="column" layout-align="space-between center">
+          <img id="imagen" class="img-responsive"/>
+        </div>
+
+      </md-card-content>
+
+      <md-card-actions layout="row" layout-align="end center">
+        <md-button ng-click="submit()" class="md-accent md-raised">Clasificar</md-button>
+      </md-card-actions>
+    </md-card>
+    </form>
+
+    <md-card layout="row" layout-align="center" style="margin-top:0px">
+      <md-card-content>
+        <div id="resultadosdiv" >
+            <div ng-show="success">
+                  <span style="color:blue;font-weight:bold">{: predictions[0].label :}</span>   <span style="color:blue">(score: {: predictions[0].score :})</span>
+            </div>
+            <div ng-show="error">
+                  <span style="color:red;font-weight:bold">Error!</span>
+            </div>
+            <div ng-show="loading">
+              <img src="https://images2.tcdn.com.br/commerce/assets/store/img//loading.gif" alt="Procesando" "">
+           </div>
+        </div>
+      </md-card-content>
+    </md-card>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
+  <script>
+    var loadFile = function(event) {
+      var output = document.getElementById('imagen');
+      output.src = URL.createObjectURL(event.target.files[0]);
+      var x = document.getElementById("resultadosdiv");
+      x.style.display = "none";
+    };
+  </script>
+  <script>
+    var app = angular.module('myApp', ['ngMaterial']);
+
+    app.config(['$interpolateProvider', function($interpolateProvider) {
+      $interpolateProvider.startSymbol('{:');
+      $interpolateProvider.endSymbol(':}');
+    }]);
+
+    app.config(function($mdThemingProvider) {
+      $mdThemingProvider.theme('default')
+        .primaryPalette('blue-grey')
+        .accentPalette('orange');
+    });
+
+    app.controller('myCtrl', ['$scope', '$http',
+      function($scope, $http) {
+        $scope.rp = "http://<public-ip>:5000";
+        $scope.loading = false;
+        $scope.success = false;
+      	$scope.error = false;
+
+        console.log("Loading ...");
+        console.log("Developed by Mirko J. Rodriguez");
+
+        $scope.submit = function() {
+          var x = document.getElementById("resultadosdiv");
+          x.style.display = "block";
+          $scope.loading = true;
+          $scope.success = false;
+        	$scope.error = false;
+
+          var myform = document.forms['myForm'];
+          var formData = new FormData(myform);
+          console.log(myform)
+
+          URI_final = $scope.rp + "/model/predict/";
+          console.log(URI_final);
+          console.log("Calling ...");
+          $http({
+            method : 'POST',
+            url : URI_final,
+            headers: {
+                'Content-Type': undefined
+            },
+            data: formData
+          }).success(function(data, status, headers, config) {
+            $scope.predictions = data.predictions;
+            console.log(data.predictions);
+            $scope.loading = false;
+            $scope.success = true;
+          	$scope.error = false;
+          }).error(function(data, status, headers, config) {
+            $scope.loading = false;
+            $scope.success = false;
+            $scope.error = true;
+          });
+
+        }
+
+        console.log("Loaded!");
+      }
+    ]);
+  </script>
+
+
+</body>
+</html>
