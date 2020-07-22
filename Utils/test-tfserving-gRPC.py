@@ -58,7 +58,7 @@ def main():
 
   # Send request
   result_predict = str(stub.Predict(request, request_timeout))
-  print("\nresult_predict:",result_predict)
+  # print("\nresult_predict:",result_predict)
 
   CLASSES = ['Daisy', 'Dandelion', 'Rosa', 'Sunflower', 'Tulip']
   values = result_predict.split('float_val:')[1:len(CLASSES) + 1]
@@ -67,7 +67,7 @@ def main():
   for element in values:
       value = element.split('\n')[0]
       print("value:",value)
-      predictions.append(float("{:.6f}".format(float(value))))
+      predictions.append(float("{:.8f}".format(float(value))))
 
   index = predictions.index(max(predictions))
   ClassPred = CLASSES[index]
