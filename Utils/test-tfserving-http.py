@@ -4,11 +4,11 @@ import numpy as np
 import requests
 from tensorflow.keras.preprocessing import image
 
-# Argumentos
+# Args
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", required=True, help="Image PATH is needed.")
-ap.add_argument("-m", "--model", required=True, help="Model NAME is needed.")
-ap.add_argument("-p", "--port", required=True, help="Model PORT number is needed.")
+ap.add_argument("-i", "--image", required=True, help="Image PATH is required.")
+ap.add_argument("-m", "--model", required=True, help="Model NAME is required.")
+ap.add_argument("-p", "--port", required=True, help="Model PORT number is required.")
 args = vars(ap.parse_args())
 
 image_path = args['image']
@@ -17,7 +17,7 @@ port = args['port']
 
 print("\nModel:",model_name)
 print("Image:",image_path)
-print("Puerto:",port)
+print("Port:",port)
 
 
 # Image processing
@@ -37,10 +37,10 @@ predictions = json.loads(json_response.text)['predictions'][0]
 print(predictions)
 index = np.argmax(predictions)
 
-CLASSES = ['Daisy', 'Dandelion', 'Rosa', 'Girasol', 'Tulipán']
+CLASSES = ['Daisy', 'Dandelion', 'Rose', 'Sunflower', 'Tulip']
 ClassPred = CLASSES[index]
 ClassProb = predictions[index]
 
 print("Index:", index)
-print("Pedicción:", ClassPred)
+print("Pred:", ClassPred)
 print("Prob:", ClassProb)
