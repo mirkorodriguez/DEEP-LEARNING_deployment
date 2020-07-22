@@ -34,9 +34,9 @@ print("URI:",uri)
 
 json_response = requests.post(uri, data=data, headers=headers)
 predictions = json.loads(json_response.text)['predictions'][0]
-print(predictions)
-index = np.argmax(predictions)
+print("predictions:",predictions)
 
+index = np.argmax(predictions)
 CLASSES = ['Daisy', 'Dandelion', 'Rose', 'Sunflower', 'Tulip']
 ClassPred = CLASSES[index]
 ClassProb = predictions[index]

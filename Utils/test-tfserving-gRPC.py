@@ -61,23 +61,25 @@ def main():
   request.inputs['vgg16_input'].CopyFrom(tensor_util.make_tensor_proto(image_ndarray, shape=[1] + list(image_ndarray.shape)))
 
   # Send request
-  predictions = str(stub.Predict(request, request_timeout))
-  print(predictions)
+  result_predict = str(stub.Predict(request, request_timeout))
+  print(result_predict)
 
   CLASSES = ['Daisy', 'Dandelion', 'Rosa', 'Sunflower', 'Tulip']
-  mylist = predictions.split('float_val:')[1:len(CLASSES) + 1]
+  values = result_predict.split('float_val:')[1:len(CLASSES)]
 
-  values = []
-  for element in mylist:
-      values.append(float("{:.6f}".format(float(element))))
+  predictions = []
+  for element in values:
+      value = element.split('\n')[0]
+      print("value:",value)
+      predictions.append(float("{:.6f}".format(float(value))))
 
-  index = values.index(max(values))
+  index = predictions.index(max(predictions))
   ClassPred = CLASSES[index]
-  ClassProb = values[index]
+  ClassProb = predictions[index]
 
-  print(values)
-  print(ClassPred)
-  print(ClassProb)
-
+  print("predictions:", predictions)
+  print("Index:", index)
+  print("Pred:", ClassPred)
+  print("Prob:", ClassProb)
 if __name__ == '__main__':
   main()
