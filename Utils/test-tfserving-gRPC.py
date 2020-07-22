@@ -1,6 +1,7 @@
 import argparse
 import numpy as np
 import tensorflow as tf
+
 from grpc.beta import implementations
 from tensorflow_serving.apis import predict_pb2
 from tensorflow_serving.apis import prediction_service_pb2
@@ -15,13 +16,13 @@ ap.add_argument("-v", "--version", required=True, help="Model VERSION is require
 ap.add_argument("-p", "--port", required=True, help="Model PORT number is required.")
 args = vars(ap.parse_args())
 
-image_path = args['image']
-model_name = args['model']
-model_version = args['version']
-port = args['port']
-
+global image_path = args['image']
+global model_name = args['model']
+global model_version = args['version']
+global port = args['port']
 
 print("\nModel:",model_name)
+print("\nModel version:",model_version)
 print("Image:",image_path)
 print("Port:",port)
 
