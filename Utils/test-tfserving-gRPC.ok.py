@@ -1,13 +1,16 @@
+https://www.tensorflow.org/guide/saved_model
+(DEV) [mirko_stem@centos-7-1 DEEP-LEARNING_deployment]$ cat Utils/test-tfserving-gRPC.py
 import argparse
 import numpy as np
-import grpc
-
 import tensorflow as tf
 from tensorflow.python.framework import tensor_util
-# from grpc.beta import implementations
+import grpc
+
+#from grpc.beta import implementations
 from tensorflow_serving.apis import predict_pb2
-# from tensorflow_serving.apis import prediction_service_pb2
+#from tensorflow_serving.apis import prediction_service_pb2
 from tensorflow_serving.apis import prediction_service_pb2_grpc
+
 
 from tensorflow.keras.preprocessing import image
 
@@ -40,21 +43,21 @@ print("Port:",port)
 
 def main():
   host = "127.0.0.1"
-  port = port
-  server = host + ':' + port
-  model_name = model_name
-  model_version = model_version
-  request_timeout = float(10)
-  image_filepaths = [image_path]
+  port = "8500"
+  server = host +':'+port
+  model_name = "flowers"
+  model_version = 1
+  request_timeout = 10.0
+  image_filepaths = ["/home/mirko_stem/DEEP-LEARNING_deployment/DeploymentType02/images/test/img01.jpg"]
 
   for index, image_filepath in enumerate(image_filepaths):
     image_ndarray = image.img_to_array(image.load_img(image_filepaths[0], target_size=(224, 224)))
     image_ndarray = image_ndarray / 255.
 
   # Create gRPC client and request
-  # channel = implementations.insecure_channel(host, port)
+#  channel = implementations.insecure_channel(host, port)
   channel = grpc.insecure_channel(server)
-  # stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
+#  stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
   stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
   request = predict_pb2.PredictRequest()
   request.model_spec.name = model_name
