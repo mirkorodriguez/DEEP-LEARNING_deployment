@@ -1,12 +1,10 @@
+import grpc
 import argparse
 import numpy as np
-import grpc
 
 import tensorflow as tf
 from tensorflow.python.framework import tensor_util
-# from grpc.beta import implementations
 from tensorflow_serving.apis import predict_pb2
-# from tensorflow_serving.apis import prediction_service_pb2
 from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 from tensorflow.keras.preprocessing import image
@@ -50,9 +48,7 @@ def main():
     image_ndarray = image_ndarray / 255.
 
   # Create gRPC client and request
-  # channel = implementations.insecure_channel(host, port)
   channel = grpc.insecure_channel(server)
-  # stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
   stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
   request = predict_pb2.PredictRequest()
   request.model_spec.name = model_name
@@ -62,10 +58,10 @@ def main():
 
   # Send request
   result_predict = str(stub.Predict(request, request_timeout))
-  print(result_predict)
+  print("\nresult_predict:",result_predict)
 
   CLASSES = ['Daisy', 'Dandelion', 'Rosa', 'Sunflower', 'Tulip']
-  values = result_predict.split('float_val:')[1:len(CLASSES)]
+  values = result_predict.split('float_val:')[1:len(CLASSES) + 1]
 
   predictions = []
   for element in values:
@@ -77,7 +73,7 @@ def main():
   ClassPred = CLASSES[index]
   ClassProb = predictions[index]
 
-  print("predictions:", predictions)
+  print("\npredictions:", predictions)
   print("Index:", index)
   print("Pred:", ClassPred)
   print("Prob:", ClassProb)

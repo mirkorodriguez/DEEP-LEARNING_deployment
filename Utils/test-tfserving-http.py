@@ -34,7 +34,7 @@ print("URI:",uri)
 
 json_response = requests.post(uri, data=data, headers=headers)
 predictions = json.loads(json_response.text)['predictions'][0]
-print("predictions:",predictions)
+print("\npredictions:",predictions)
 
 index = np.argmax(predictions)
 CLASSES = ['Daisy', 'Dandelion', 'Rose', 'Sunflower', 'Tulip']
