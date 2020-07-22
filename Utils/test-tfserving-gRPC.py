@@ -36,7 +36,7 @@ def main():
   # request_timeout = float(10)
   # image_filepaths = [image_path]
   host = "127.0.0.1"
-  port = "8500"
+  port = "9500"
   server = host +':'+port
   model_name = "flowers"
   model_version = 1

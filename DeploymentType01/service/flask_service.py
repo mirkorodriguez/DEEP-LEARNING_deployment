@@ -1,7 +1,7 @@
 # Developed by Mirko J. Rodríguez mirko.rodriguezm@gmail.com
 
 # --------------------------------------------
-# Exponiendo el servicio Web en el puerto 5000
+# REST service un der port 9000
 # --------------------------------------------
 
 #Import Flask
@@ -20,7 +20,7 @@ from model_loader import cargarModeloH5
 UPLOAD_FOLDER = '../images/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
-port = int(os.getenv('PORT', 5000))
+port = int(os.getenv('PORT', 9000))
 print ("Port recognized: ", port)
 
 #Initialize the application service

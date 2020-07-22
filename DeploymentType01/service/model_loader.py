@@ -1,7 +1,7 @@
 # Developed by Mirko J. Rodríguez mirko.rodriguezm@gmail.com
 
 # ------------------------
-# Cargando modelo de disco
+# Loading model from disk
 # ------------------------
 import tensorflow as tf
 
@@ -12,6 +12,6 @@ def cargarModeloH5():
 
     # Cargar el modelo DL desde disco
     loaded_model = tf.keras.models.load_model(MODEL_H5_PATH + MODEL_H5_FILE)
-    print(MODEL_H5_FILE, " cargado de disco >> ", loaded_model)
+    print(MODEL_H5_FILE, " Loading from disk >> ", loaded_model)
 
     return loaded_model
