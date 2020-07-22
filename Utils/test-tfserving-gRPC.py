@@ -25,27 +25,25 @@ model_version = args['version']
 port = args['port']
 
 print("\nModel:",model_name)
-print("\nModel version:",model_version)
+print("Model version:",model_version)
 print("Image:",image_path)
 print("Port:",port)
 
-# # Flags
-# tf.app.flags.DEFINE_string("host", "127.0.0.1", "gRPC server host")
-# tf.app.flags.DEFINE_integer("port", port, "gRPC server port")
-# tf.app.flags.DEFINE_string("model_name", model, "TensorFlow model name")
-# tf.app.flags.DEFINE_integer("model_version", version, "TensorFlow model version")
-# tf.app.flags.DEFINE_float("request_timeout", 10.0, "Timeout of gRPC request")
-# FLAGS = tf.app.flags.FLAGS
-
-
 def main():
+  # host = "127.0.0.1"
+  # port = port
+  # server = host + ':' + port
+  # model_name = model_name
+  # model_version = model_version
+  # request_timeout = float(10)
+  # image_filepaths = [image_path]
   host = "127.0.0.1"
-  port = port
-  server = host + ':' + port
-  model_name = model_name
-  model_version = model_version
-  request_timeout = float(10)
-  image_filepaths = [image_path]
+  port = "8500"
+  server = host +':'+port
+  model_name = "flowers"
+  model_version = 1
+  request_timeout = 10.0
+  image_filepaths = ["/home/mirko_stem/DEEP-LEARNING_deployment/DeploymentType02/images/test/img01.jpg"]
 
   for index, image_filepath in enumerate(image_filepaths):
     image_ndarray = image.img_to_array(image.load_img(image_filepaths[0], target_size=(224, 224)))
