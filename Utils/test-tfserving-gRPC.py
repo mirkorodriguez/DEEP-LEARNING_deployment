@@ -17,29 +17,29 @@ args = vars(ap.parse_args())
 
 image_path = args['image']
 model_name = args['model']
+model_version = args['version']
 port = args['port']
-version = args['version']
+
 
 print("\nModel:",model_name)
 print("Image:",image_path)
 print("Port:",port)
 
-# Flags
-tf.app.flags.DEFINE_string("host", "127.0.0.1", "gRPC server host")
-tf.app.flags.DEFINE_integer("port", port, "gRPC server port")
-tf.app.flags.DEFINE_string("model_name", model, "TensorFlow model name")
-tf.app.flags.DEFINE_integer("model_version", version, "TensorFlow model version")
-tf.app.flags.DEFINE_float("request_timeout", 10.0, "Timeout of gRPC request")
-FLAGS = tf.app.flags.FLAGS
+# # Flags
+# tf.app.flags.DEFINE_string("host", "127.0.0.1", "gRPC server host")
+# tf.app.flags.DEFINE_integer("port", port, "gRPC server port")
+# tf.app.flags.DEFINE_string("model_name", model, "TensorFlow model name")
+# tf.app.flags.DEFINE_integer("model_version", version, "TensorFlow model version")
+# tf.app.flags.DEFINE_float("request_timeout", 10.0, "Timeout of gRPC request")
+# FLAGS = tf.app.flags.FLAGS
 
 
 def main():
-  host = FLAGS.host
-  port = FLAGS.port
-  model_name = FLAGS.model_name
-  model_version = FLAGS.model_version
-  request_timeout = FLAGS.request_timeout
-
+  host = "127.0.0.1"
+  port = int(port)
+  model_name = model_name
+  model_version = model_version
+  request_timeout = float(10)
   image_filepaths = [image_path]
 
   for index, image_filepath in enumerate(image_filepaths):
