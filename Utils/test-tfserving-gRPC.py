@@ -65,7 +65,7 @@ def main():
   print(predictions)
 
   CLASSES = ['Daisy', 'Dandelion', 'Rosa', 'Sunflower', 'Tulip']
-  mylist = predictions.split('float_val:')[1:len(CLASSES)]
+  mylist = predictions.split('float_val:')[1:len(CLASSES) + 1]
 
   values = []
   for element in mylist:
