@@ -1,8 +1,8 @@
 # Developed by Mirko J. Rodríguez mirko.rodriguezm@gmail.com
 
-# --------------------------------------------
-# REST service un der port 9000
-# --------------------------------------------
+# ----------------------------
+# REST service under port 9000
+# ----------------------------
 
 #Import Flask
 from flask import Flask, request, jsonify

@@ -1,8 +1,8 @@
 # Developed by Mirko J. Rodríguez mirko.rodriguezm@gmail.com
 
-# --------------------------------------------
-# Exponiendo el servicio Web en el puerto 5000
-# --------------------------------------------
+# -------------------------------
+# Creating a service on port XXXX
+# -------------------------------
 
 #Import Flask
 from flask import Flask, request, jsonify
