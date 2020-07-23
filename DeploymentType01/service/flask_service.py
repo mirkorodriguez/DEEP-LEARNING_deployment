@@ -37,7 +37,7 @@ def allowed_file(filename):
 #Define a default route
 @app.route('/')
 def main_page():
-	return '¡REST service is active via Flask!'
+	return 'REST service is active via Flask!'
 
 # Model route
 @app.route('/model/predict/',methods=['POST'])
