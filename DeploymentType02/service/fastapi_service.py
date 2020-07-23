@@ -26,11 +26,12 @@ def main_page():
 
 @app.post("/model/predict/")
 async def predict(file: UploadFile = File(...)):
-    if file and allowed_file(file.filename):
-        print("\nfilename:",file.filename)
+    filename = file.filename
+    if file and allowed_file(filename):
+        print("\nfilename:",filename)
         contents = await file.read()
         print("\ncontents:",contents)
-        image_to_predict = image.load_img(filename, target_size=(224, 224))
+        image_to_predict = image.load_img(filename??, target_size=(224, 224))
 
     return {"filename": file.filename}
 
