@@ -10,10 +10,10 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
+#Define a default route
+@app.route('/')
+def main_page():
+    return '¡REST service is active via FastAPI (version: '+fastapi.__version__+')!'
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
