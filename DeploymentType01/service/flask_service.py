@@ -8,8 +8,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-#Import Tensorflow
-import tensorflow as tf
+#Import Tensorflow image
+from tensorflow.keras.preprocessing import image
 
 #Import libraries
 import numpy as np
@@ -59,8 +59,8 @@ def predict():
             filename = UPLOAD_FOLDER + '/' + filename
             print("\nfilename:",filename)
 
-            image_to_predict = tf.keras.preprocessing.image.load_img(filename, target_size=(224, 224))
-            test_image = tf.keras.preprocessing.image.img_to_array(image_to_predict)
+            image_to_predict = image.load_img(filename, target_size=(224, 224))
+            test_image = image.img_to_array(image_to_predict)
             test_image = np.expand_dims(test_image, axis = 0)
             test_image = test_image.astype('float32')
             test_image /= 255.0

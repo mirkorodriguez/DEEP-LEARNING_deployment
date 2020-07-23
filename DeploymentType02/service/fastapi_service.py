@@ -4,8 +4,12 @@
 # REST service via FastAPI
 # ------------------------
 
-from typing import Optional
+#Import FastAPI libraries
 from fastapi import FastAPI, File, UploadFile
+from typing import Optional
+
+#Import Tensorflow image
+from tensorflow.keras.preprocessing import image
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
@@ -21,11 +25,13 @@ def main_page():
     return 'REST service is active via FastAPI'
 
 @app.post("/model/predict/")
-async def create_upload_file(file: UploadFile = File(...)):
+async def predict(file: UploadFile = File(...)):
     if file and allowed_file(file.filename):
         print("\nfilename:",file.filename)
         contents = await file.read()
         print("\ncontents:",contents)
+        image_to_predict = image.load_img(filename, target_size=(224, 224))
+
     return {"filename": file.filename}
 
 @app.get("/items/{item_id}")

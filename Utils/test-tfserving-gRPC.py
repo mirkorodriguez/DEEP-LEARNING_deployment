@@ -44,8 +44,10 @@ def main():
   image_filepaths = ["/home/mirko_stem/DEEP-LEARNING_deployment/DeploymentType02/images/test/img01.jpg"]
 
   for index, image_filepath in enumerate(image_filepaths):
-    image_ndarray = image.img_to_array(image.load_img(image_filepaths[0], target_size=(224, 224)))
-    image_ndarray = image_ndarray / 255.
+    test_image = image.load_img(image_filepaths[0], target_size=(224, 224))
+    test_image = image.img_to_array(test_image)
+    test_image = test_image.astype('float32')
+    test_image = test_image / 255.0
 
   # Create gRPC client and request
   channel = grpc.insecure_channel(server)
@@ -54,7 +56,7 @@ def main():
   request.model_spec.name = model_name
   request.model_spec.version.value = model_version
   request.model_spec.signature_name = "serving_default"
-  request.inputs['vgg16_input'].CopyFrom(tensor_util.make_tensor_proto(image_ndarray, shape=[1] + list(image_ndarray.shape)))
+  request.inputs['vgg16_input'].CopyFrom(tensor_util.make_tensor_proto(test_image, shape=[1] + list(image_ndarray.shape)))
 
   # Send request
   result_predict = str(stub.Predict(request, request_timeout))
