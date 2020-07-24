@@ -56,7 +56,7 @@ def main():
   request.model_spec.name = model_name
   request.model_spec.version.value = model_version
   request.model_spec.signature_name = "serving_default"
-  request.inputs['vgg16_input'].CopyFrom(tensor_util.make_tensor_proto(test_image, shape=[1] + list(image_ndarray.shape)))
+  request.inputs['vgg16_input'].CopyFrom(tensor_util.make_tensor_proto(test_image, shape=[1] + list(test_image.shape)))
 
   # Send request
   result_predict = str(stub.Predict(request, request_timeout))
