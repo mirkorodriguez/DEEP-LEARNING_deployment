@@ -1,3 +1,8 @@
+# -----------------------------------
+# Testing TensorFlow Serving via HTTP
+# Author: Mirko Rodriguez
+# -----------------------------------
+
 import argparse
 import json
 import numpy as np
@@ -20,7 +25,7 @@ print("Image:",image_path)
 print("Port:",port)
 
 
-# Image processing
+# Loading image
 test_image = image.load_img(image_path,target_size = (224, 224))
 test_image = image.img_to_array(test_image)
 test_image = np.expand_dims(test_image, axis = 0)
