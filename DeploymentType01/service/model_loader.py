@@ -5,7 +5,7 @@
 # ------------------------
 import tensorflow as tf
 
-def cargarModeloH5():
+def loadModelH5():
 
     MODEL_H5_FILE = "flowers_model_full_tf2.h5"
     MODEL_H5_PATH = "../../../models/tf2x/keras/single/"

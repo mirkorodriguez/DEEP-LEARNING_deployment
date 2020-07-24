@@ -12,10 +12,10 @@ from flask_cors import CORS
 from tensorflow.keras.preprocessing import image
 
 #Import libraries
-import numpy as np
 import os
+import numpy as np
 from werkzeug.utils import secure_filename
-from model_loader import cargarModeloH5
+from model_loader import loadModelH5
 
 UPLOAD_FOLDER = '../images/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -27,8 +27,7 @@ print ("Port recognized: ", port)
 app = Flask(__name__)
 CORS(app)
 global loaded_model
-loaded_model = cargarModeloH5()
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+loaded_model = loadModelH5()
 
 # Functions
 def allowed_file(filename):
@@ -52,13 +51,13 @@ def predict():
         if file.filename == '':
             print('No selected file')
         if file and allowed_file(file.filename):
+            print("\nFilename received:",file.filename)
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            tmpfile = ''.join([UPLOAD_FOLDER ,'/',filename])
+            file.save(tmpfile)
+            print("\nFilename stored:",tmpfile)
 
             #loading image
-            filename = UPLOAD_FOLDER + '/' + filename
-            print("\nfilename:",filename)
-
             image_to_predict = image.load_img(filename, target_size=(224, 224))
             test_image = image.img_to_array(image_to_predict)
             test_image = np.expand_dims(test_image, axis = 0)
