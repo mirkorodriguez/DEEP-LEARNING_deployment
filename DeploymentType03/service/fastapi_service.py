@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 #Import Tensorflow image
 from tensorflow.keras.preprocessing import image
 
-UPLOAD_FOLDER = 'uploads/images'
+UPLOAD_FOLDER = '../images/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 #Main definition for FastAPI

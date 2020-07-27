@@ -17,7 +17,7 @@ import numpy as np
 from werkzeug.utils import secure_filename
 from model_loader import loadModelH5
 
-UPLOAD_FOLDER = '../images/uploads'
+UPLOAD_FOLDER = 'uploads/images'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 port = int(os.getenv('PORT', 9000))

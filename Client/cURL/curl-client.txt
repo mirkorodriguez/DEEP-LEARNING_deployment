@@ -1,2 +1,2 @@
 # Llamada al servicio CURL
-curl -i -X POST -F "file=@<image-path>" http://<public-ip>:5000/model/predict/
+curl -i -X POST -F "file=@<image-path>" http://<public-ip>:9000/model/predict/

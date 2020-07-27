@@ -10,7 +10,7 @@
 		{
 			"name": "postman-client",
 			"request": {
-				"url": "http://<public-ip>:5000/model/predict/",
+				"url": "http://<public-ip>:9000/model/predict/",
 				"method": "POST",
 				"header": [],
 				"body": {
