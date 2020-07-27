@@ -58,7 +58,7 @@ def predict():
             print("\nFilename stored:",tmpfile)
 
             #loading image
-            image_to_predict = image.load_img(filename, target_size=(224, 224))
+            image_to_predict = image.load_img(tmpfile, target_size=(224, 224))
             test_image = image.img_to_array(image_to_predict)
             test_image = np.expand_dims(test_image, axis = 0)
             test_image = test_image.astype('float32')
