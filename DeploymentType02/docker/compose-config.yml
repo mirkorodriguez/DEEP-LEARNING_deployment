@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  flowers:
+    image: tensorflow/serving
+    ports:
+      - 9500:8500
+      - 9501:8501
+    volumes:
+      - ${MODEL_PB}:/models/flowers
+    environment:
+      - MODEL_NAME=flowers

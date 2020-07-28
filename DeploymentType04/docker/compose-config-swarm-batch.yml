@@ -3,8 +3,6 @@ version: '3'
 services:
   flowers:
     image: tensorflow/serving
-    deploy:
-      replicas: 5
     ports:
       - 9500:8500
       - 9501:8501
@@ -12,13 +10,17 @@ services:
       - ${MODELS}:/models/flowers
     environment:
       - MODEL_NAME=flowers
+    deploy:
+      replicas: 4
+    command:
+      - --enable_batching=true
 
   visualizer:
     image: dockersamples/visualizer
-    deploy:
-      placement:
-        constraints: [node.role == manager]
     ports:
       - 9001:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      placement:
+        constraints: [node.role == manager]
