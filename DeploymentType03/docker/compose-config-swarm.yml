@@ -7,13 +7,11 @@ services:
       - 9500:8500
       - 9501:8501
     volumes:
-      - ${MODELS}:/models/flowers
+      - ${MODEL_PB}:/models/flowers
     environment:
       - MODEL_NAME=flowers
     deploy:
       replicas: 4
-    command:
-      - --enable_batching=true
 
   visualizer:
     image: dockersamples/visualizer

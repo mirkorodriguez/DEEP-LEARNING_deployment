@@ -63,7 +63,7 @@ values = result_predict.split('float_val:')[1:len(CLASSES) + 1]
 predictions = []
 for element in values:
   value = element.split('\n')[0]
-  print("value:",value)
+  # print("value:",value)
   predictions.append(float("{:.8f}".format(float(value))))
 print("\npredictions:", predictions)
 
