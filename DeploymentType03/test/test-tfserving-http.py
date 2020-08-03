@@ -13,14 +13,17 @@ from tensorflow.keras.preprocessing import image
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True, help="Image PATH is required.")
 ap.add_argument("-m", "--model", required=True, help="Model NAME is required.")
+ap.add_argument("-v", "--version", required=True, help="Model VERSION is required.")
 ap.add_argument("-p", "--port", required=True, help="Model PORT number is required.")
 args = vars(ap.parse_args())
 
 image_path = args['image']
 model_name = args['model']
+model_version = args['version']
 port = args['port']
 
 print("\nModel:",model_name)
+print("Model version:",model_version)
 print("Image:",image_path)
 print("Port:",port)
 
@@ -34,7 +37,7 @@ test_image /= 255.0
 
 data = json.dumps({"signature_name": "serving_default", "instances": test_image.tolist()})
 headers = {"content-type": "application/json"}
-uri = ''.join(['http://127.0.0.1:',port,'/v1/models/',model_name,':predict'])
+uri = ''.join(['http://127.0.0.1:',port,'/v',model_version,'/models/',model_name,':predict'])
 print("URI:",uri)
 
 json_response = requests.post(uri, data=data, headers=headers)
