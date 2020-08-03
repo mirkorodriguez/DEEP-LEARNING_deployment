@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Developed by Mirko J. Rodríguez mirko.rodriguezm@gmail.com
+# source ./DEEP-LEARNING_deployment/Utils/download_models.sh ~/models
 
 FOLDER=$1
 
