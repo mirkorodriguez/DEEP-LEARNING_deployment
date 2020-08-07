@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  flowers:
+    image: tensorflow/serving
+    ports:
+      - 9500:8500
+      - 9501:8501
+    volumes:
+      - ${MODEL_PB}:/models/flowers
+    environment:
+      - MODEL_NAME=flowers
+    deploy:
+      replicas: 5
+    command:
+      - --enable_batching=true
+
+  visualizer:
+    image: dockersamples/visualizer
+    ports:
+      - 9001:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
