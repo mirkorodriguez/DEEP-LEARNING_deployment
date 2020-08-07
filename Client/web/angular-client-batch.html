@@ -21,7 +21,7 @@
       <md-card-content>
         <div style="margin-bottom:16px" layout="column" layout-align="center">
           <span style="font-weight:bold;font-size:13">Image to classify:</span>
-          <input type="file" name="file" ng-model="cn" class="form-control" onchange="loadFile(event)" accept=".jpg,.jpeg,.png" style="font-size:13">
+          <input type="file" name="file" multiple ng-model="cn" class="form-control" onchange="loadFile(event)" accept=".jpg,.jpeg,.png" style="font-size:13">
         </div>
 
         <div  layout="column" layout-align="space-between center">
@@ -80,7 +80,7 @@
 
     app.controller('myCtrl', ['$scope', '$http',
       function($scope, $http) {
-        $scope.rp = "http://<public-ip>:9000";
+        $scope.rp = "http://146.148.86.148:9000";
         $scope.loading = false;
         $scope.success = false;
       	$scope.error = false;
@@ -106,7 +106,7 @@
             method : 'POST',
             url : URI_final,
             headers: {
-                'Content-Type': undefined
+                'Content-Type': 'multipart/form-data'
             },
             data: formData
           }).success(function(data, status, headers, config) {

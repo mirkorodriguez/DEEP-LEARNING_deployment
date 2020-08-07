@@ -66,7 +66,7 @@ def predict():
 
             predictions = loaded_model.predict(test_image)[0]
             index = np.argmax(predictions)
-            CLASSES = ['Daisy', 'Dandelion', 'Rosa', 'Girasol', 'Tulipán']
+            CLASSES = ['Daisy', 'Dandelion', 'Rose', 'Sunflower', 'Tulip']
             ClassPred = CLASSES[index]
             ClassProb = predictions[index]
 
