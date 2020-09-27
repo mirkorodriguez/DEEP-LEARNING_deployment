@@ -4,7 +4,7 @@
 # ----------------------------------------------------------
 
 ###################### CentOS Configuration ##########################
-#install tools on CentOS 7:
+#Install tools on CentOS 7:
 sudo yum –y update
 sudo yum install -y zip unzip nano git tree wget
 
@@ -20,7 +20,7 @@ conda deactivate
 ######################################################################
 
 
-#################### Create a DEV conda Environment ##################
+######################## Create DEV Environment ######################
 #Create an environment called "DEV"
 conda create -n DEV pip python=3.7.0
 conda activate DEV
@@ -40,4 +40,28 @@ python -c "import flask; print('Flask: ', flask.__version__)"
 
 #Deactivate current environment:
 conda deactivate
-####################################################################
+######################################################################
+
+######################### Create PROD Environment ####################
+#Create an environment called "PROD"
+conda create -n PROD pip python=3.7.5
+conda activate PROD
+
+#Install TensorFlow in PROD:
+pip install --no-cache-dir tensorflow==2.3.0
+pip install tensorflow-serving-api
+
+#Install FastAPI, uvicorn and other tools in PROD:
+pip install fastapi
+pip install uvicorn # ASGI server for production: https://github.com/tiangolo/fastapi
+pip install python-multipart
+pip install pillow #Pil image needed for tf.keras image
+
+#Testing tools installation version:
+python -c "import platform; print('\nPython: ',platform.python_version())"
+python -c "import tensorflow as tf; print('TensorFlow: ',tf.__version__)"
+python -c "import fastapi; print('FastAPI: ', fastapi.__version__)"
+
+#Deactiavate current environment:
+conda deactivate
+#########################################################################
