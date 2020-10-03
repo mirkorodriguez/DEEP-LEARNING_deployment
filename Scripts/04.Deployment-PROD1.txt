@@ -1,0 +1,105 @@
+# Commands for deployment in PROD Environment (Centos 7 - Linux)
+# ------------------------------------------------------------
+# Author: Mirko J. Rodríguez
+# ------------------------------------------------------------
+
+
+######################## Deployment PROD ver1 ########################
+#Initializing TensorFlow serving with .pb model
+cd ~
+export MODEL_PB=$(pwd)/models/tf2x/tensorflow
+
+#Start docker service:
+sudo systemctl start docker
+
+#Start TensorFlow serving with our model:
+docker run \
+    -p 9500:8500 \
+    -p 9501:8501 \
+    -v "$MODEL_PB:/models/flowers" \
+    -e MODEL_NAME=flowers \
+    -t tensorflow/serving &
+
+#Validate container
+docker ps
+curl http://127.0.0.1:9501/v1/models/flowers
+
+#Activate PROD environment
+conda activate PROD
+
+#Locate on test folder
+cd ~/DEEP-LEARNING_deployment/Deployment-PROD1/test
+
+#TFserving on HTTP 9501 --> 8501
+python test-tfserving-http.py \
+    --image $(pwd)/images/img01.jpg \
+    --model flowers \
+    --version 1 \
+    --port 9501
+
+#TFserving on gGPR 9500 --> 8500
+python test-tfserving-gRPC.py \
+    --image $(pwd)/images/img01.jpg \
+    --model flowers \
+    --version 1 \
+    --port 9500
+
+#Stop docker service
+sudo systemctl stop docker
+###################################################################################
+
+############################### Start FastAPI service  ############################
+# starting the service
+cd ~/DEEP-LEARNING_deployment/Deployment-PROD1/service/
+
+# Activando environment PROD
+conda activate PROD
+
+# Iniciando servicio
+uvicorn fastapi_service:app --port 9000 --host 0.0.0.0 --reload #reload for development only (reload changes)
+###################################################################################
+
+#Stop Web Service: Ctrl + C
+
+#Deactivate PROD env
+conda deactivate
+
+
+
+# ---------------------------------------------------------------------------------
+
+# WORKING WITH docker compose (alternative)
+################################# Install docker Compose ##########################
+#Install docker-compose:
+sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+#Permissions for execution mode:
+sudo chmod +x /usr/local/bin/docker-compose
+
+#Validate docker-compose version:
+docker-compose --version
+###################################################################################
+
+
+#################### Start TensorFlow service with docker-compose #################
+#Start docker service:
+sudo systemctl start docker
+
+#Delete all Containers:
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker ps -a
+
+#Folder with PB model
+cd ~
+export MODEL_PB=$(pwd)/models/tf2x/tensorflow
+
+#Start TensorFlow serving with docker-compose:
+cd ~/DEEP-LEARNING_deployment/Deployment-PROD1/docker
+
+#Docker UP
+docker-compose -f compose-config.yml up &
+
+#Docker DOWN
+docker-compose -f compose-config.yml down
+###################################################################################

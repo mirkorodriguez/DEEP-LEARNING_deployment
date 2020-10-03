@@ -1,0 +1,71 @@
+# Commands for deployment in PROD Environment (Centos 7 - Linux)
+# ------------------------------------------------------------
+# Author: Mirko J. Rodríguez
+# ------------------------------------------------------------
+
+
+########################## Deployment PROD ver3 #########################
+#Start docker service
+sudo systemctl start docker
+
+#Remove all Containers (optional)
+docker rm $(docker ps -aq)
+
+#Folder with PB model
+cd ~
+export MODEL_PB=$(pwd)/models/tf2x/tensorflow
+
+#Start Docker Swarm
+docker swarm init
+
+#Start TensorFlow serving with docker-compose:
+cd ~/DEEP-LEARNING_deployment/DeploymentType04/docker
+
+docker stack deploy -c compose-config-swarm-batch.yml MYSTACK
+
+# Check services/containers
+docker stack ls
+docker service ls
+docker container ls
+
+#Visualize servicew on web browser (don't forget open port 9001)
+http://<public IP>:9001/
+
+#Activate PROD environment
+conda activate PROD
+
+#Locate on test folder
+cd ~/DEEP-LEARNING_deployment/DeploymentType04/test
+
+#TFserving on gGPR 9500 --> 8500
+python test-tfserving-gRPC-batch.py \
+    --images $(pwd)/images/img01.jpg,$(pwd)/images/img02.jpg,$(pwd)/images/img03.jpg \
+    --model flowers \
+    --version 1 \
+    --port 9500
+
+# Remove stack
+docker stack rm MYSTACK
+
+#Leave docker swarm
+docker swarm leave --force
+
+# Stop docker
+sudo systemctl stop docker
+#########################################################################
+
+######################### Start FastAPI service  ########################
+# starting the service
+cd ~/DEEP-LEARNING_deployment/DeploymentType04/service/
+
+# Activando environment PROD
+conda activate PROD
+
+# Iniciando servicio
+uvicorn fastapi_service_batch:app --port 9000 --host 0.0.0.0 --reload #reload for development only (reload changes)
+#########################################################################
+
+#Stop Web Service: Ctrl + C
+
+#Deactivate PROD env
+conda deactivate

@@ -20,10 +20,14 @@ conda deactivate
 ######################################################################
 
 
+
 ######################## Create DEV Environment ######################
 #Create an environment called "DEV"
-conda create -n DEV pip python=3.7.0
+conda create -n DEV
 conda activate DEV
+
+#Install python
+pip install python=3.7.0
 
 #Install tensorFlow in DEV environment:
 pip install --no-cache-dir tensorflow==2.3.0
@@ -42,10 +46,15 @@ python -c "import flask; print('Flask: ', flask.__version__)"
 conda deactivate
 ######################################################################
 
+
+
 ######################### Create PROD Environment ####################
 #Create an environment called "PROD"
-conda create -n PROD pip python=3.7.5
+conda create -n PROD
 conda activate PROD
+
+#Install python
+pip install python=3.7.5
 
 #Install TensorFlow in PROD:
 pip install --no-cache-dir tensorflow==2.3.0
@@ -65,3 +74,27 @@ python -c "import fastapi; print('FastAPI: ', fastapi.__version__)"
 #Deactiavate current environment:
 conda deactivate
 #########################################################################
+
+
+
+############# Download Deep Learning models (model.zip) ##############
+#Create folder "~/models" to download deep learning models:
+mkdir -p ~/models
+cd ~/models
+
+#Download models from google drive
+export FILEID=1N3F1MWpPz2Mv60HbLS0bHFHDiFJ1QXvq
+wget --load-cookies cookies.txt \
+    "https://docs.google.com/uc?export=download&confirm=$(wget \
+    --quiet \
+    --save-cookies cookies.txt \
+    --keep-session-cookies \
+    --no-check-certificate 'https://docs.google.com/uc?export=download&id='${FILEID} \
+    -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=${FILEID}" \
+    -O model.zip && rm -rf cookies.txt
+
+unzip model.zip && rm -rf model.zip && cd ~
+
+#List downloaded models
+tree ~/models
+######################################################################

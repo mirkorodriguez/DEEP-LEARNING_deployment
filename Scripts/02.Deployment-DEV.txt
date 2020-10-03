@@ -1,0 +1,24 @@
+# Commands for deployment in DEV Environment (Centos 7 - Linux)
+# ------------------------------------------------------------
+# Author: Mirko J. Rodríguez
+# ------------------------------------------------------------
+
+########################## Deployment DEV #########################
+#Clone main deployment project:
+cd ~
+git clone https://github.com/mirkorodriguez/DEEP-LEARNING_deployment.git
+
+#Locate on service folder:
+cd ~/DEEP-LEARNING_deployment/Deployment-DEV/service/
+
+#Activate DEV environment:
+conda activate DEV
+
+#Starting web service on port 5000:
+python flask_service.py --port 5000 &
+###################################################################
+
+#Stop Web service: Ctrl + C
+
+#Deactivate DEV env
+conda deactivate

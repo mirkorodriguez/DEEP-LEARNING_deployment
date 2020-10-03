@@ -1,0 +1,55 @@
+# Commands for deployment in PROD Environment (Centos 7 - Linux)
+# ------------------------------------------------------------
+# Author: Mirko J. Rodríguez
+# ------------------------------------------------------------
+
+####################### Docker installation #######################
+#Reference: https://docs.docker.com/install/linux/docker-ce/centos/
+
+#Install pre-requirements:
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+
+#Add docker repo:
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+#Install docker
+sudo yum install -y docker-ce docker-ce-cli containerd.io
+
+#Start Docker service
+sudo systemctl start docker
+
+#Validate Docker version
+docker --version
+
+#Post installation configuration
+#sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+
+#Download 'hello-world' docker image
+docker pull hello-world
+
+#Create a docker container from 'hello-world' image'
+docker run hello-world
+
+#List Docker objects
+docker images #Images
+docker ps -a  #Containers
+
+#Stop Docker service
+sudo systemctl stop docker
+###################################################################
+
+####################### TensorFlow Serving ########################
+#Start docker service:
+sudo systemctl start docker
+
+#Pull TensorFlow Serving docker image:
+docker pull tensorflow/serving
+
+#Show docker images
+docker images
+
+#Stop docker service
+sudo systemctl stop docker
+####################################################################

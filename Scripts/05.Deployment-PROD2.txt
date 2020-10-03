@@ -1,0 +1,96 @@
+# Commands for deployment in PROD Environment (Centos 7 - Linux)
+# ------------------------------------------------------------
+# Author: Mirko J. Rodríguez
+# ------------------------------------------------------------
+
+
+########################## Deployment PROD ver2 ###########################
+#Docker container Manager --> Swarm
+
+#Start docker service:
+sudo systemctl start docker
+
+#Remove all Containers (optional):
+docker rm $(docker ps -aq)
+
+#Folder with PB model:
+cd ~
+export MODEL_PB=$(pwd)/models/tf2x/tensorflow
+
+#Start Docker Swarm:
+docker swarm init
+
+#Start TensorFlow serving with docker-compose:
+cd ~/DEEP-LEARNING_deployment/DeploymentType03/docker
+
+docker stack deploy -c compose-config-swarm.yml MYSTACK
+
+#Check services/containers:
+docker stack ls
+docker service ls
+docker container ls
+docker ps
+
+#Visualize service on web browser (don't forget open port 9001)
+http://<public IP>:9001/
+
+#Validate deployed models:
+curl http://127.0.0.1:9501/v1/models/flowers
+
+#Activate PROD environment:
+conda activate PROD
+
+#Locate on test folder:
+cd ~/DEEP-LEARNING_deployment/DeploymentType03/test
+
+#TFserving on HTTP 9501 --> 8501
+python test-tfserving-http.py \
+    --image $(pwd)/images/img01.jpg \
+    --model flowers \
+    --version 1 \
+    --port 9501
+
+#TFserving on gGPR 9500 --> 8500
+python test-tfserving-gRPC.py \
+    --image $(pwd)/images/img01.jpg \
+    --model flowers \
+    --version 1 \
+    --port 9500
+
+# stop a container/service
+#docker stop XXXXXX
+# Swarn automatically creates a new one to replace it
+
+# Rescale instances
+docker service scale MYSTACK_flowers=10
+#MYSTACK_flowers scaled to 10
+
+#Validate new containers in visualizaer service
+http://<public IP>:9001/
+
+#Remove stack
+docker stack rm MYSTACK
+
+#Leave docker swarm
+docker swarm leave --force
+
+#Stop docker
+sudo systemctl stop docker
+#########################################################################
+
+
+######################### Start FastAPI service  ########################
+# starting the service
+cd ~/DEEP-LEARNING_deployment/DeploymentType03/service/
+
+# Activando environment PROD
+conda activate PROD
+
+# Iniciando servicio
+uvicorn fastapi_service:app --port 9000 --host 0.0.0.0 --reload #reload for development only (reload changes)
+#########################################################################
+
+#Stop Web Service: Ctrl + C
+
+#Deactivate PROD env
+conda deactivate

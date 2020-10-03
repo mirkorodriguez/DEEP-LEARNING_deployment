@@ -1,35 +1,44 @@
 # Developed by Mirko J. Rodríguez mirko.rodriguezm@gmail.com
-
-# ----------------------------
-# REST service under port 9000
-# ----------------------------
+# -------------
+# REST service
+# -------------
 
 #Import Flask
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-#Import Tensorflow image
+#Import Tensorflow image library
 from tensorflow.keras.preprocessing import image
 
 #Import libraries
-import os
 import numpy as np
 from werkzeug.utils import secure_filename
+
+#Import model_loader.py functions
 from model_loader import loadModelH5
 
+#Args
+ap = argparse.ArgumentParser()
+ap.add_argument("-p", "--port", required=True, help="Service PORT number is required.")
+args = vars(ap.parse_args())
+
+#Service port
+port = args['port']
+print("Port recognized: ", port)
+
+#Params
 UPLOAD_FOLDER = 'uploads/images'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
-port = int(os.getenv('PORT', 9000))
-print ("Port recognized: ", port)
-
-#Initialize the application service
+#Initialize the application service (FLASK)
 app = Flask(__name__)
 CORS(app)
+
+#Vars
 global loaded_model
 loaded_model = loadModelH5()
 
-# Functions
+#Functions
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
