@@ -18,6 +18,7 @@ from werkzeug.utils import secure_filename
 from model_loader import loadModelH5
 
 #Args
+import argparse
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--port", required=True, help="Service PORT number is required.")
 args = vars(ap.parse_args())
