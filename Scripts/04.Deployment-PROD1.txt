@@ -44,20 +44,32 @@ python test-tfserving-gRPC.py \
     --version 1 \
     --port 9500
 
+#Stop docker container
+#docker stop <CONTAINER-ID>
+
 #Stop docker service
-sudo systemctl stop docker
+#sudo systemctl stop docker
 ###################################################################################
 
 ############################### Start FastAPI service  ############################
-# starting the service
+# Starting the service
 cd ~/DEEP-LEARNING_deployment/Deployment-PROD1/service/
 
-# Activando environment PROD
+# Activating PROD env
 conda activate PROD
 
-# Iniciando servicio
-uvicorn fastapi_service:app --port 9000 --host 0.0.0.0 --reload #reload for development only (reload changes)
+# starting web-service
+uvicorn fastapi_service:app --port 9000 --host 0.0.0.0
+
+# starting web-service (for development only)
+uvicorn fastapi_service:app --port 9000 --host 0.0.0.0 --reload  #reload changes
 ###################################################################################
+
+#Swagger (connect to path /docs)
+#http://127.0.0.1:9000/docs
+
+#ReDoc (connect to path /redoc)
+#http://127.0.0.1:9000/redoc
 
 #Stop Web Service: Ctrl + C
 
@@ -79,6 +91,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 #Validate docker-compose version:
 docker-compose --version
 ###################################################################################
+
+
+
 
 
 #################### Start TensorFlow service with docker-compose #################
