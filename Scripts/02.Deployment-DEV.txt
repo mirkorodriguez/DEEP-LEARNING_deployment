@@ -15,7 +15,10 @@ cd ~/DEEP-LEARNING_deployment/Deployment-DEV/service/
 conda activate DEV
 
 #Starting web service on port 5000:
-python flask_service.py --port 5000 &
+python flask_service.py --port 5000
+
+#Starting web service on port 5000 (daemon):
+#python flask_service.py --port 5000 &
 ###################################################################
 
 #Stop Web service: Ctrl + C
