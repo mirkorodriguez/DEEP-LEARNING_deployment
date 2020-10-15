@@ -19,7 +19,7 @@ export MODEL_PB=$(pwd)/models/tf2x/tensorflow
 docker swarm init
 
 #Start TensorFlow serving with docker-compose:
-cd ~/DEEP-LEARNING_deployment/DeploymentType04/docker
+cd ~/DEEP-LEARNING_deployment/Deployment-PROD3/docker
 
 docker stack deploy -c compose-config-swarm-batch.yml MYSTACK
 
@@ -35,7 +35,7 @@ http://<public IP>:9001/
 conda activate PROD
 
 #Locate on test folder
-cd ~/DEEP-LEARNING_deployment/DeploymentType04/test
+cd ~/DEEP-LEARNING_deployment/Deployment-PROD3/test
 
 #TFserving on gGPR 9500 --> 8500
 python test-tfserving-gRPC-batch.py \
@@ -56,13 +56,16 @@ sudo systemctl stop docker
 
 ######################### Start FastAPI service  ########################
 # starting the service
-cd ~/DEEP-LEARNING_deployment/DeploymentType04/service/
+cd ~/DEEP-LEARNING_deployment/Deployment-PROD3/service/
 
 # Activando environment PROD
 conda activate PROD
 
-# Iniciando servicio
-uvicorn fastapi_service_batch:app --port 9000 --host 0.0.0.0 --reload #reload for development only (reload changes)
+# starting web-service
+uvicorn fastapi_service:app --port 9000 --host 0.0.0.0
+
+# starting web-service (for development only)
+uvicorn fastapi_service:app --port 9000 --host 0.0.0.0 --reload  #reload changes
 #########################################################################
 
 #Stop Web Service: Ctrl + C

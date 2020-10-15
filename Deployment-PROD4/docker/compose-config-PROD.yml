@@ -11,7 +11,7 @@ services:
     environment:
       - MODEL_NAME=flowers
     deploy:
-      replicas: 5
+      replicas: 4
     command:
       - --enable_batching=true
 

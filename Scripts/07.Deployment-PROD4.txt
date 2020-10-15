@@ -20,7 +20,7 @@ export MODEL_PB=$(pwd)/models/tf2x/tensorflow
 docker swarm init
 
 #Start TensorFlow serving with docker-compose:
-cd ~/DEEP-LEARNING_deployment/DeploymentTypePROD/docker
+cd ~/DEEP-LEARNING_deployment/Deployment-PROD4/docker
 
 docker stack deploy -c compose-config-PROD.yml PROD-STACK
 
@@ -36,7 +36,7 @@ http://<public IP>:9001/
 conda activate PROD
 
 #Locate on test folder
-cd ~/DEEP-LEARNING_deployment/DeploymentTypePROD/test
+cd ~/DEEP-LEARNING_deployment/Deployment-PROD4/test
 
 #TFserving on gGPR 9500 --> 8500
 python test-tfserving-gRPC-PROD.py \
@@ -57,13 +57,13 @@ sudo systemctl stop docker
 
 ######################### Start FastAPI service  ########################
 # starting the service
-cd ~/DEEP-LEARNING_deployment/DeploymentTypePROD/service/
+cd ~/DEEP-LEARNING_deployment/Deployment-PROD4/service/
 
 # Activando environment PROD
 conda activate PROD
 
-# Iniciando servicio
-uvicorn fastapi_service_PROD:app --port 9000 --host 0.0.0.0 --reload #reload for development only (reload changes)
+# starting web-service
+uvicorn fastapi_service:app --port 9000 --host 0.0.0.0
 #########################################################################
 
 #Stop Web Service: Ctrl + C
@@ -73,17 +73,20 @@ conda deactivate
 
 
 ############################### Monitoring ##############################
-#prometheus: IP:9090
-#grafana: IP:3000
+#Prometheus: IP:9002
 
-#admin/admin
+#Grafana: IP:9003
+#>> admin/admin
+#Grafana Datasource:
+#>> public-ip:9090
+#>> server
 
-add Datasource:
-public-ip:9090
-server
+#Grafana dashboards to import
+https://grafana.com/grafana/dashboards?dataSource=prometheus)
 
-Create dashborad (import from https://grafana.com/grafana/dashboards?dataSource=prometheus)
-query
+
+
+
 
 https://medium.com/@salohyprivat/prometheus-and-grafana-d59f3b1ded8b
 
