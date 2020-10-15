@@ -1,133 +1,214 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=ISO 8859-1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Image classifier</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
-
-</head>
-
-<body ng-app="myApp" ng-cloak bgcolor="black" ng-controller="myCtrl" layout="column">
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <span>Flowers classificator</span>
-    </div>
-  </md-toolbar>
-
-  <form name="myForm">
-    <md-card style="margin-bottom:0px">
-      <md-card-content>
-        <div style="margin-bottom:16px" layout="column" layout-align="center">
-          <span style="font-weight:bold;font-size:13">Image to classify:</span>
-          <input type="file" name="file" multiple ng-model="cn" class="form-control" onchange="loadFile(event)" accept=".jpg,.jpeg,.png" style="font-size:13">
-        </div>
-
-        <div  layout="column" layout-align="space-between center">
-          <img id="imagen" class="img-responsive"/>
-        </div>
-
-      </md-card-content>
-
-      <md-card-actions layout="row" layout-align="end center">
-        <md-button ng-click="submit()" class="md-accent md-raised">Classify</md-button>
-      </md-card-actions>
-    </md-card>
-    </form>
-
-    <md-card layout="row" layout-align="center" style="margin-top:0px">
-      <md-card-content>
-        <div id="resultadosdiv" >
-            <div ng-show="success">
-                  <span style="color:blue;font-weight:bold">{: predictions[0].label :}</span>   <span style="color:blue">(score: {: predictions[0].score :})</span>
-            </div>
-            <div ng-show="error">
-                  <span style="color:red;font-weight:bold">Error!</span>
-            </div>
-            <div ng-show="loading">
-              <img src="https://images2.tcdn.com.br/commerce/assets/store/img//loading.gif" alt="Processing" "">
-           </div>
-        </div>
-      </md-card-content>
-    </md-card>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
-  <script>
-    var loadFile = function(event) {
-      var output = document.getElementById('imagen');
-      output.src = URL.createObjectURL(event.target.files[0]);
-      var x = document.getElementById("resultadosdiv");
-      x.style.display = "none";
-    };
-  </script>
-  <script>
-    var app = angular.module('myApp', ['ngMaterial']);
-
-    app.config(['$interpolateProvider', function($interpolateProvider) {
-      $interpolateProvider.startSymbol('{:');
-      $interpolateProvider.endSymbol(':}');
-    }]);
-
-    app.config(function($mdThemingProvider) {
-      $mdThemingProvider.theme('default')
-        .primaryPalette('blue-grey')
-        .accentPalette('orange');
-    });
-
-    app.controller('myCtrl', ['$scope', '$http',
-      function($scope, $http) {
-        $scope.rp = "http://146.148.86.148:9000";
-        $scope.loading = false;
-        $scope.success = false;
-      	$scope.error = false;
-
-        console.log("Loading ...");
-        console.log("Developed by Mirko J. Rodriguez");
-
-        $scope.submit = function() {
-          var x = document.getElementById("resultadosdiv");
-          x.style.display = "block";
-          $scope.loading = true;
-          $scope.success = false;
-        	$scope.error = false;
-
-          var myform = document.forms['myForm'];
-          var formData = new FormData(myform);
-          console.log(myform)
-
-          URI_final = $scope.rp + "/model/predict/";
-          console.log(URI_final);
-          console.log("Calling ...");
-          $http({
-            method : 'POST',
-            url : URI_final,
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            data: formData
-          }).success(function(data, status, headers, config) {
-            $scope.predictions = data.predictions;
-            console.log(data.predictions);
-            $scope.loading = false;
-            $scope.success = true;
-          	$scope.error = false;
-          }).error(function(data, status, headers, config) {
-            $scope.loading = false;
-            $scope.success = false;
-            $scope.error = true;
-          });
-
-        }
-
-        console.log("Loaded!");
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image classifier</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <style>
+      html, body {
+      min-height: 100%;
       }
-    ]);
-  </script>
+      body, div, form, input, select, p {
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      color: #666;
+      line-height: 22px;
+      }
+      h1 {
+      position: absolute;
+      margin: 0;
+      font-size: 38px;
+      color: #000;
+      z-index: 2;
+      }
+      p.top-info {
+      margin: 10px 0;
+      }
+      .testbox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: inherit;
+      padding: 20px;
+      }
+      form {
+      width: 90%;
+      padding: 20px;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 0 25px 0 #1c87c9;
+      }
+     .banner {
+      position: relative;
+      height: 100px;
+      background-image: url("/uploads/media/default/0001/02/fb57ab781c34da322c884532bfec751e843e36fc.jpeg");
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      }
+      .banner::after {
+      content: "";
+      background-color: rgba(0, 0, 0, 0.6);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      }
+      input, select, textarea {
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      }
+      input {
+      width: calc(100% - 10px);
+      padding: 5px;
+      }
+      input[type="date"] {
+      padding: 4px 5px;
+      }
+      select {
+      width: 100%;
+      padding: 7px 0;
+      background: transparent;
+      }
+      .item:hover p, .item:hover i, .question:hover p, .question label:hover, input:hover::placeholder {
+      color: #1c87c9;
+      }
+      .item input:hover, .item select:hover {
+      border: 1px solid transparent;
+      box-shadow: 0 0 6px 0 #1c87c9;
+      color: #1c87c9;
+      }
+      .item {
+      position: relative;
+      margin: 10px 0;
+      }
+      input[type="date"]::-webkit-inner-spin-button {
+      display: none;
+      }
+      .item i, input[type="date"]::-webkit-calendar-picker-indicator {
+      position: absolute;
+      font-size: 20px;
+      color: #a9a9a9;
+      }
+      .item i {
+      right: 2%;
+      top: 30px;
+      z-index: 1;
+      }
+      [type="date"]::-webkit-calendar-picker-indicator {
+      right: 1%;
+      z-index: 2;
+      opacity: 0;
+      cursor: pointer;
+      }
+      input[type=radio]  {
+      display: none;
+      }
+      label.radio {
+      position: relative;
+      display: inline-block;
+      margin: 5px 20px 10px 0;
+      cursor: pointer;
+      }
+      .question span {
+      margin-left: 30px;
+      }
+      span.required {
+      margin-left: 0;
+      color: red;
+      }
+      label.radio:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      }
+      input[type=radio]:checked + label:before, label.radio:hover:before {
+      border: 2px solid #1c87c9;
+      }
+      label.radio:after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 5px;
+      width: 8px;
+      height: 4px;
+      border: 3px solid #1c87c9;
+      border-top: none;
+      border-right: none;
+      transform: rotate(-45deg);
+      opacity: 0;
+      }
+      input[type=radio]:checked + label:after {
+      opacity: 1;
+      }
+      .btn-block {
+      margin-top: 10px;
+      text-align: center;
+      }
+      button {
+      width: auto;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #1c87c9;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      }
+      button:hover {
+      background: #1e6fa0;
+      }
+      @media (min-width: 568px) {
+      .name-item, .contact-item, .position-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      }
+      .name-item input {
+      width: calc(50% - 20px);
+      }
+      .contact-item .item, .position-item .item {
+      width: calc(50% - 8px);
+      }
+      .contact-item input, .position-item input {
+      width: calc(100% - 12px);
+      }
+      .position-item select {
+      width: 100%;
+      }
+      }
+    </style>
+  </head>
 
+  <body>
 
-</body>
+    <div >
+        <div>
+          <h1>Images classifier</h1>
+          <br>
+          <p class="top-info">Please choose more than one image to predict:</p>
+        </div>
+    </div>
+
+    <div align="center">
+
+      <form action="http://<public-ip>:9000/model/predict/" enctype="multipart/form-data" method="post">
+        <input name="files" type="file" multiple accept=".jpg,.jpeg,.png">
+        <div class="btn-block">
+          <button type="submit" href="/">Classify</button>
+        </div>
+      </form>
+
+    </div>
+  </body>
 </html>
