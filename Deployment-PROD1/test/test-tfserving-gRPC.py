@@ -47,6 +47,7 @@ test_image = test_image / 255.0
 # Create gRPC client and request
 channel = grpc.insecure_channel(server)
 stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
+
 request = predict_pb2.PredictRequest()
 request.model_spec.name = model_name
 request.model_spec.version.value = model_version

@@ -6,6 +6,7 @@
 
 #Import FastAPI libraries
 from fastapi import FastAPI, File, UploadFile
+from starlette.middleware.cors import CORSMiddleware
 from werkzeug.utils import secure_filename
 
 import json
@@ -17,6 +18,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 #Main definition for FastAPI
 app = FastAPI()
+app.add_middleware(CORSMiddleware, allow_origins=['*'])
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

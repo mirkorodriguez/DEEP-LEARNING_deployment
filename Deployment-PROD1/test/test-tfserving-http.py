@@ -41,6 +41,7 @@ uri = ''.join(['http://127.0.0.1:',port,'/v',model_version,'/models/',model_name
 print("URI:",uri)
 
 json_response = requests.post(uri, data=data, headers=headers)
+
 predictions = json.loads(json_response.text)['predictions'][0]
 print("\npredictions:",predictions)
 

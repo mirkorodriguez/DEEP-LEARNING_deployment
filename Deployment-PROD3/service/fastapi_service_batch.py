@@ -20,6 +20,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 #Main definition for FastAPI
 app = FastAPI()
+app.add_middleware(CORSMiddleware, allow_origins=['*'])
 
 app.add_middleware(
     CORSMiddleware,
