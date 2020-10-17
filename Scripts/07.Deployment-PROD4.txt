@@ -63,7 +63,7 @@ cd ~/DEEP-LEARNING_deployment/Deployment-PROD4/service/
 conda activate PROD
 
 # starting web-service
-uvicorn fastapi_service:app --port 9000 --host 0.0.0.0
+uvicorn fastapi_service_PROD:app --port 9000 --host 0.0.0.0
 #########################################################################
 
 #Stop Web Service: Ctrl + C
@@ -78,17 +78,8 @@ conda deactivate
 #Grafana: IP:9003
 #>> admin/admin
 #Grafana Datasource:
-#>> public-ip:9090
+#>> public-ip:9002
 #>> server
 
 #Grafana dashboards to import
-https://grafana.com/grafana/dashboards?dataSource=prometheus)
-
-
-
-
-
-https://medium.com/@salohyprivat/prometheus-and-grafana-d59f3b1ded8b
-
-# # https://sudonull.com/post/30758-How-We-Increased-Tensorflow-Serving-Productivity-by-70
-# # https://fastapi.tiangolo.com/tutorial/request-files/#:~:text=the%20HTTP%20protocol.-,Multiple%20file%20uploads,sent%20using%20%22form%20data%22.&text=You%20will%20receive%2C%20as%20declared,of%20bytes%20or%20UploadFile%20s.
+https://grafana.com/grafana/dashboards?dataSource=prometheus

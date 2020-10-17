@@ -65,7 +65,7 @@ conda activate PROD
 uvicorn fastapi_service:app --port 9000 --host 0.0.0.0
 
 # starting web-service (for development only)
-uvicorn fastapi_service:app --port 9000 --host 0.0.0.0 --reload  #reload changes
+uvicorn fastapi_service_batch:app --port 9000 --host 0.0.0.0 --reload  #reload changes
 #########################################################################
 
 #Stop Web Service: Ctrl + C
